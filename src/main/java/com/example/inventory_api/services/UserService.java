@@ -44,6 +44,7 @@ public class UserService {
     public UserResponse getById(Long id) {
         var user = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         return mapper.toUserResponse(user);
     }
 
@@ -67,15 +68,8 @@ public class UserService {
         var user = repository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (!user.getEmail().equals(request.email()) && repository.existsByEmail(request.email())) {
-            throw new BusinessException("E-mail already in use");
-        }
-
-        validatePassword(request.password());
-
-        if (passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new BusinessException("The new password must differ from current one");
-        }
+        validator.validateEmailUniqueness(user.getEmail(), request.email());
+        validator.validatePasswordChange(request.password(), user.getPasswordHash());
 
         user.setName(request.name());
         user.setEmail(request.email());
@@ -88,14 +82,18 @@ public class UserService {
         var user = repository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        validatePassword(newPassword);
-
-        if (passwordEncoder.matches(newPassword, user.getPasswordHash())) {
-            throw new BusinessException("New password must differ from current one");
-        }
-
+        validator.validatePasswordChange(newPassword, user.getPasswordHash());
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         repository.save(user);
+    }
+
+    @Transactional
+    public void activateUser(Long id) {
+        var user = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        validator.ensureUserIsInactive(user);
+        user.setActive(true);
     }
 
     @Transactional
@@ -105,17 +103,4 @@ public class UserService {
 
         user.setActive(false);
     }
-
-    @Transactional
-    public void activateUser(Long id) {
-        var user = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        if (user.isActive()) {
-            throw new BusinessException("User is already active");
-        }
-
-        user.setActive(true);
-    }
-
 }
