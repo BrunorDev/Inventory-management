@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mapping(target = "active", ignore = true)
     @Mapping(target = "stockMovements", ignore = true)
     @Mapping(target = "passwordHash", source = "password")
     @Mapping(target = "id", ignore = true)
