@@ -32,6 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Profile profile;
 
+    private boolean active;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<StockMovement> stockMovements = new ArrayList<>();
 
