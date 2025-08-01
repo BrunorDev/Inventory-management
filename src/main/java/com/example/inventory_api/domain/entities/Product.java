@@ -49,6 +49,8 @@ public class Product {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
+    private boolean available;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<StockMovement> stockMovements = new ArrayList<>();
 
