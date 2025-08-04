@@ -1,0 +1,82 @@
+package com.example.inventory_api.services;
+
+import com.example.inventory_api.domain.enums.Type;
+import com.example.inventory_api.dtos.stockMovementDTO.StockMovementRequest;
+import com.example.inventory_api.dtos.stockMovementDTO.StockMovementResponse;
+import com.example.inventory_api.exceptions.BusinessException;
+import com.example.inventory_api.exceptions.ResourceNotFoundException;
+import com.example.inventory_api.mappers.StockMovementMapper;
+import com.example.inventory_api.repositories.CategoryRepository;
+import com.example.inventory_api.repositories.ProductRepository;
+import com.example.inventory_api.repositories.StockMovementRepository;
+import com.example.inventory_api.repositories.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class StockMovementService {
+
+    private final StockMovementRepository stockMovementRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final StockMovementMapper mapper;
+
+    @Transactional
+    public StockMovementResponse registerSale(StockMovementRequest request, Long productId, Long userId) {
+        var product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Integer quantity = request.quantity();
+
+        if (quantity == null || quantity <= 0) {
+            throw new BusinessException("Sale quantity must be greater than zero");
+        }
+
+        if (product.getQuantityStock() < quantity) {
+            throw new BusinessException("Insufficient stock for this product");
+        }
+
+        product.setQuantityStock(product.getQuantityStock() - quantity);
+
+        var sale = mapper.toStockMovement(request);
+        sale.setUser(user);
+        sale.setProduct(product);
+        sale.setType(Type.OUTPUT);
+        sale.setDateTime(LocalDateTime.now());
+
+        return mapper.toStockResponse(stockMovementRepository.save(sale));
+    }
+
+    @Transactional
+    public StockMovementResponse registerInput(StockMovementRequest request, Long productId, Long userId) {
+        var product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Integer quantity = request.quantity();
+
+        if (quantity == null || quantity <= 0) {
+            throw new BusinessException("Input quantity must be greater than zero");
+        }
+
+        product.setQuantityStock(product.getQuantityStock() + quantity);
+
+        var input = mapper.toStockMovement(request);
+        input.setUser(user);
+        input.setProduct(product);
+        input.setType(Type.INPUT);
+        input.setDateTime(LocalDateTime.now());
+
+        return mapper.toStockResponse(stockMovementRepository.save(input));
+    }
+
+}
