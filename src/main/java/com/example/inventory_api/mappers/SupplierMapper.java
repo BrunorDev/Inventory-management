@@ -3,6 +3,7 @@ package com.example.inventory_api.mappers;
 import com.example.inventory_api.domain.entities.Supplier;
 import com.example.inventory_api.dtos.supplierDTO.SupplierRequest;
 import com.example.inventory_api.dtos.supplierDTO.SupplierResponse;
+import com.example.inventory_api.dtos.supplierDTO.SupplierSummary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,4 +19,6 @@ public interface SupplierMapper {
     SupplierResponse toSupplierResponse(Supplier supplier);
 
     List<SupplierResponse> toSupplierResponseList(List<Supplier> suppliers);
+
+    SupplierSummary toSupplierSummary(Supplier supplier);
 }
