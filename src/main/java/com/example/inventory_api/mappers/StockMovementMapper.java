@@ -6,6 +6,8 @@ import com.example.inventory_api.dtos.stockMovementDTO.StockMovementResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface StockMovementMapper {
 
@@ -22,4 +24,5 @@ public interface StockMovementMapper {
     @Mapping(target = "productName", source = "product.name")
     StockMovementResponse toStockResponse(StockMovement stockMovement);
 
+    List<StockMovementResponse> toStockResponseList(List<StockMovement> movements);
 }
