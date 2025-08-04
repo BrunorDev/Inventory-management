@@ -18,10 +18,6 @@ public interface StockMovementMapper {
     @Mapping(target = "user.id", source = "userId")
     StockMovement toStockMovement(StockMovementRequest request);
 
-    @Mapping(target = "productName", source = "product.name")
-    @Mapping(target = "userName", source = "user.name")
-    StockMovementResponse toResponse(StockMovement stockMovement);
-
     @Mapping(target = "userName", source = "user.name")
     @Mapping(target = "productName", source = "product.name")
     StockMovementResponse toStockResponse(StockMovement stockMovement);
