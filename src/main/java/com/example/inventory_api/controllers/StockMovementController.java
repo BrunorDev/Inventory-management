@@ -59,10 +59,8 @@ public class StockMovementController {
     @GetMapping
     public ResponseEntity<List<StockMovementResponse>> getAll() {
         var movements = stockMovementService.getAll();
-
-        if (movements.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(movements);
+        return movements.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(movements);
     }
 }

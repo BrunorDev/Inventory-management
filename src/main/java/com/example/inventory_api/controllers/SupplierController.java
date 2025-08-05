@@ -26,11 +26,9 @@ public class SupplierController {
     @GetMapping
     public ResponseEntity<List<SupplierResponse>> getAll() {
         var suppliers = supplierService.getAll();
-
-        if (suppliers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(suppliers);
+        return suppliers.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(suppliers);
     }
 
     @GetMapping("/{id}")
