@@ -80,8 +80,12 @@ public class StockMovementService {
         return mapper.toStockResponse(stockMovementRepository.save(input));
     }
 
-
     //filter methods
+    public List<StockMovementResponse> getAll(){
+        var movements = stockMovementRepository.findAll();
+        return mapper.toStockResponseList(movements);
+    }
+
     public List<StockMovementResponse> getByProductId(Long productId) {
         if (!productRepository.existsById(productId)) {
             throw new BusinessException("The product ID you entered does not exist");
