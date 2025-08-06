@@ -40,7 +40,7 @@ public class ProductValidator {
             throw new BusinessException("Sale price cannot be lower than purchase price");
         }
 
-        if (request.expiryDate().isBefore(LocalDate.now().plusDays(3))) {
+        if (request.expiryDate() != null && request.expiryDate().isBefore(LocalDate.now().plusDays(3))) {
             throw new BusinessException("Expiry date must be at least 3 days in the future");
         }
     }
