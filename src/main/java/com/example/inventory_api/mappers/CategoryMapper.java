@@ -3,6 +3,7 @@ package com.example.inventory_api.mappers;
 import com.example.inventory_api.domain.entities.Category;
 import com.example.inventory_api.dtos.categoryDTO.CategoryRequest;
 import com.example.inventory_api.dtos.categoryDTO.CategoryResponse;
+import com.example.inventory_api.dtos.categoryDTO.CategorySummary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,4 +19,6 @@ public interface CategoryMapper {
     CategoryResponse toCategoryResponse(Category category);
 
     List<CategoryResponse> toCategoryResponseList(List<Category> categories);
+
+    CategorySummary toCategorySummary(Category category);
 }
