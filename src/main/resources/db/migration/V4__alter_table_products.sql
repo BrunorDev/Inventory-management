@@ -1,0 +1,1 @@
+ALTER TABLE products ALTER COLUMN expiry_date DROP NOT NULL;
