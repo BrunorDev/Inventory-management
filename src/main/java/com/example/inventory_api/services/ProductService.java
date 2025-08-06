@@ -96,15 +96,15 @@ public class ProductService {
 
 //    Methods QUERIES / FILTERS
 
-    public List<Product> getByName(String name) {
-        return productRepository.findByName(name);
+    public List<ProductResponse> getByName(String name) {
+        return mapper.toProductResponseList(productRepository.findByName(name));
     }
 
-    public List<Product> getAllByQuantity(Integer quantity) {
+    public List<ProductResponse> getAllByQuantity(Integer quantity) {
         if (quantity < 0) {
             throw new BusinessException("Invalid quantity: must be 0 or more");
         }
-        return productRepository.findByQuantityStockEquals(quantity);
+        return mapper.toProductResponseList(productRepository.findByQuantityStockEquals(quantity));
     }
 
     public List<ProductResponse> getAllByCategory(Long categoryId) {
