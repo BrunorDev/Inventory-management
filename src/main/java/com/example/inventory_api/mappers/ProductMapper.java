@@ -3,6 +3,7 @@ package com.example.inventory_api.mappers;
 import com.example.inventory_api.domain.entities.Product;
 import com.example.inventory_api.dtos.productDTO.ProductRequest;
 import com.example.inventory_api.dtos.productDTO.ProductResponse;
+import com.example.inventory_api.dtos.productDTO.ProductSummary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -21,4 +22,10 @@ public interface ProductMapper {
     ProductResponse toProductResponse(Product product);
 
     List<ProductResponse> toProductResponseList(List<Product> products);
+
+    List<ProductSummary> toProductSummaryList(List<Product> products);
+
+    @Mapping(source = "category.name", target = "categoryName")
+    @Mapping(source = "supplier.name", target = "supplierName")
+    ProductSummary toProductSummary(Product product);
 }
