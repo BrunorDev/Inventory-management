@@ -47,12 +47,12 @@ public class ProductController {
     }
 
     @GetMapping("/filter/name")
-    public ResponseEntity<List<Product>> getByName(@RequestParam String name) {
+    public ResponseEntity<List<ProductResponse>> getByName(@RequestParam String name) {
         return ResponseEntity.ok(productService.getByName(name));
     }
 
     @GetMapping("/filter/quantity")
-    public ResponseEntity<List<Product>> getAllByQuantity(@RequestParam Integer quantity) {
+    public ResponseEntity<List<ProductResponse>> getAllByQuantity(@RequestParam Integer quantity) {
         return ResponseEntity.ok(productService.getAllByQuantity(quantity));
     }
 
@@ -64,5 +64,10 @@ public class ProductController {
     @GetMapping("/filter/supplier")
     public ResponseEntity<List<ProductResponse>> getAllBySupplier(@RequestParam Long supplierId) {
         return ResponseEntity.ok(productService.getAllBySupplier(supplierId));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody @Valid ProductRequest request) {
+        return ResponseEntity.ok(productService.update(id, request));
     }
 }
