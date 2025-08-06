@@ -3,6 +3,7 @@ package com.example.inventory_api.services;
 import com.example.inventory_api.domain.entities.Product;
 import com.example.inventory_api.dtos.productDTO.ProductRequest;
 import com.example.inventory_api.dtos.productDTO.ProductResponse;
+import com.example.inventory_api.dtos.productDTO.ProductSummary;
 import com.example.inventory_api.exceptions.BusinessException;
 import com.example.inventory_api.exceptions.ResourceNotFoundException;
 import com.example.inventory_api.mappers.ProductMapper;
@@ -45,9 +46,9 @@ public class ProductService {
         return mapper.toProductResponse(productRepository.save(product));
     }
 
-    public List<ProductResponse> getAll() {
+    public List<ProductSummary> getAll() {
         var products = productRepository.findAll();
-        return mapper.toProductResponseList(products);
+        return mapper.toProductSummaryList(products);
     }
 
     public ProductResponse getById(Long id) {
@@ -94,20 +95,20 @@ public class ProductService {
         return mapper.toProductResponse(product);
     }
 
-//    Methods QUERIES / FILTERS
+//   filter methods
 
-    public List<ProductResponse> getByName(String name) {
-        return mapper.toProductResponseList(productRepository.findByName(name));
+    public List<ProductSummary> getByName(String name) {
+        return mapper.toProductSummaryList(productRepository.findByName(name));
     }
 
-    public List<ProductResponse> getAllByQuantity(Integer quantity) {
+    public List<ProductSummary> getAllByQuantity(Integer quantity) {
         if (quantity < 0) {
             throw new BusinessException("Invalid quantity: must be 0 or more");
         }
-        return mapper.toProductResponseList(productRepository.findByQuantityStockEquals(quantity));
+        return mapper.toProductSummaryList(productRepository.findByQuantityStockEquals(quantity));
     }
 
-    public List<ProductResponse> getAllByCategory(Long categoryId) {
+    public List<ProductSummary> getAllByCategory(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new BusinessException("Category not found");
         }
@@ -117,10 +118,10 @@ public class ProductService {
         if (products.isEmpty()) {
             throw new BusinessException("No products found in this category");
         }
-        return mapper.toProductResponseList(products);
+        return mapper.toProductSummaryList(products);
     }
 
-    public List<ProductResponse> getAllBySupplier(Long supplierId) {
+    public List<ProductSummary> getAllBySupplier(Long supplierId) {
         if (!supplierRepository.existsById(supplierId)) {
             throw new BusinessException("Supplier not found");
         }
@@ -130,6 +131,6 @@ public class ProductService {
         if (products.isEmpty()) {
             throw new BusinessException("No products found for this supplier");
         }
-        return mapper.toProductResponseList(products);
+        return mapper.toProductSummaryList(products);
     }
 }
