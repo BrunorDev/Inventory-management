@@ -1,6 +1,7 @@
 package com.example.inventory_api.controllers;
 
 import com.example.inventory_api.dtos.loginDTO.LoginRequest;
+import com.example.inventory_api.dtos.userDTO.PasswordUpdateRequest;
 import com.example.inventory_api.dtos.userDTO.UserRequest;
 import com.example.inventory_api.dtos.userDTO.UserResponse;
 import com.example.inventory_api.services.UserService;
@@ -40,8 +41,8 @@ public class UserController {
     @PatchMapping("/{id}/password")
     public ResponseEntity<Void> updatePassword(
             @PathVariable Long id,
-            @RequestBody @Valid String newPassword) {
-        userService.updatePassword(id, newPassword);
+            @RequestBody @Valid PasswordUpdateRequest request) {
+        userService.updatePassword(id, request.newPassword());
         return ResponseEntity.noContent().build();
     }
 
