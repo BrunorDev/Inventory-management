@@ -1,6 +1,7 @@
 package com.example.inventory_api.dtos.productDTO;
 
 import com.example.inventory_api.dtos.categoryDTO.CategoryResponse;
+import com.example.inventory_api.dtos.categoryDTO.CategorySummary;
 import com.example.inventory_api.dtos.supplierDTO.SupplierSummary;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ public record ProductResponse(
         LocalDate expiryDate,
         BigDecimal purchasePrice,
         BigDecimal priceOnSale,
-        CategoryResponse category,
+        CategorySummary category,
         SupplierSummary supplier
 ) {
 }
