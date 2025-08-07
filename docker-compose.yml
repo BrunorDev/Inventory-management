@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: library_db
+      POSTGRES_DB: inventory_db
     ports:
       - "5432:5432"
 
