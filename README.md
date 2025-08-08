@@ -1,7 +1,6 @@
 # Inventory Management API
 
-API REST para gerenciamento de estoque, com funcionalidades para cadastro de produtos, movimentações (entrada e saída), controle de fornecedores, categorias e usuários. Desenvolvido com Java, Spring Boot, JPA, Flyway, PostgreSQL e Docker.
-
+API REST para gerenciamento de estoque, com funcionalidades para cadastro de produtos, movimentações (entrada e saída), controle de fornecedores, categorias e usuários.
 ## Tecnologias Utilizadas
 
 - Java 22+
